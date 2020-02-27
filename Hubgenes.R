@@ -61,6 +61,11 @@ heatmap(hubs_plot)
 ###### kME based hub genes ##########
 ## kME: correlation between gene and eigengene
 
+# Recalculate MEs with color labels
+MEs0 = moduleEigengenes(datExpr, moduleColors)$eigengenes
+# change module names with their colors
+MEs = orderMEs(MEs0)
+
 kME_green <- signedKME(datExpr = datExpr[, gene_id_green ], datME = MEs)[,"kMEgreen"]
 names(kME_green) <- gene_id_green
 
@@ -100,6 +105,8 @@ plot(ge1)
 # Select modules
 modules = c("green")
 
+
+############## creat input files for Cytoscape ###################3
 # Select module probes
 probes = names(datExpr)
 inModule = is.finite(match(moduleColors, modules));
