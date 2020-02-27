@@ -8,7 +8,7 @@ options(stringsAsFactors = FALSE)
 
 
 # Load the data saved in the 2.data cleaning
-lnames = load(file = "TPM_resm_dataInput_avelog.RData")
+lnames = load(file = "TPM_resm_dataInput.RData")
 #The variable lnames contains the names of loaded variables.
 lnames
 
@@ -54,7 +54,7 @@ text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
 #     file="net_test_20200219.txt",sep="\n", append=TRUE)
 # WGCNA has its own cor function
 cor <- WGCNA::cor
-net = blockwiseModules(datExpr, power = 9,
+net = blockwiseModules(datExpr, power = 7,
                        TOMType = "unsigned", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
@@ -83,7 +83,7 @@ moduleColors = labels2colors(net$colors)
 MEs = net$MEs;
 geneTree = net$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "TPM_avelog-auto.RData")
+     file = "TPM_filterByExpr-auto.RData")
 
 
 ###************** Test maxBlockSize = 20000 ****************
@@ -122,4 +122,4 @@ moduleColors = labels2colors(net20k$colors)
 MEs = net20k$MEs;
 geneTree = net20k$dendrograms[[1]];
 save(MEs, moduleLabels, moduleColors, geneTree, 
-     file = "TPM_avelog-auto20k.RData")
+     file = "TPM_filterByExpr-auto20k.RData")

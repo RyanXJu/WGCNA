@@ -5,15 +5,12 @@ library(WGCNA)
 setwd("/u/juxiao/AML_WGCNA")
 getwd()
 
-# Load the data saved in the 2.data cleaning
-lnames = load(file = "TPM_resm_dataInput_avelog.RData")
-#The variable lnames contains the names of loaded variables.
+lnames = load(file = "TPM_resm_dataInput.RData");
 lnames
-
-# Load the expression and trait data saved in 3.module detection
-lnames = load(file = "TPM_avelog-auto20k.RData");
-#The variable lnames contains the names of loaded variables.
+lnames = load(file = "TPM_filterByExpr-auto.RData");
 lnames
+nGenes = ncol(datExpr)
+nSamples = nrow(datExpr)
 
 
 # Define numbers of genes and samples
@@ -21,6 +18,7 @@ nGenes = ncol(datExpr);
 nSamples = nrow(datExpr);
 # Recalculate MEs with color labels
 MEs0 = moduleEigengenes(datExpr, moduleColors)$eigengenes
+# change module names with their colors
 MEs = orderMEs(MEs0)
 
 # module vs traits
