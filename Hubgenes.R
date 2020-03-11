@@ -123,4 +123,4 @@ cyt = exportNetworkToCytoscape(modTOM,
                                threshold = 0.02,
                                nodeNames = modProbes,
                                altNodeNames = modProbes,
-                               nodeAttr = moduleColors[inModule]);
+                               nodeAttr = moduleColors[inModule])
