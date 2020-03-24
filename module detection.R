@@ -55,7 +55,7 @@ text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
 # WGCNA has its own cor function
 cor <- WGCNA::cor
 net = blockwiseModules(datExpr, power = 7,
-                       TOMType = "unsigned", minModuleSize = 30,
+                       TOMType = "signed", minModuleSize = 30,
                        reassignThreshold = 0, mergeCutHeight = 0.25,
                        numericLabels = TRUE, pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,

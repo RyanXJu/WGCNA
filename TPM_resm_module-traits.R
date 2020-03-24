@@ -206,6 +206,40 @@ write.table(geneInfo_green$geneSymbol, file = "/u/juxiao/AML_WGCNA/green_geneid.
             sep = ",", quote = FALSE, row.names = FALSE)
 
 write.csv(geneInfo, file = "geneInfo.csv")
+
+
+
+##### correlation between cytogenetic subgroup and modules
+cyto <- load("cyto_group.R")
+cyto
+
+cyto_group <- cyto_group[rownames(MEs),]
+cor <- stats::cor
+moduleCytoCor = cor(MEs, cyto_group, use = "p");
+moduleCytoPvalue = corPvalueStudent(moduleCytoCor, nSamples)
+
+sizeGrWindow(10,6)
+# Will display correlations and their p-values
+textMatrix =  paste(signif(moduleCytoCor, 2), "\n(",
+                    signif(moduleCytoPvalue, 1), ")", sep = "");
+dim(textMatrix) = dim(moduleCytoCor)
+par(mar = c(6, 8.5, 3, 3));
+# Display the correlation values within a heatmap plot
+labeledHeatmap(Matrix = moduleCytoCor,
+               xLabels = colnames(cyto_group),
+               yLabels = names(MEs),
+               ySymbols = names(MEs),
+               colorLabels = FALSE,
+               colors = greenWhiteRed(50),
+               textMatrix = textMatrix,
+               setStdMargins = FALSE,
+               cex.text = 0.5,
+               zlim = c(-1,1),
+               main = paste("Module-cytogenetic relationships"))
+
+
+
+
 # ############################ GO enrichment ################# 
 # # GOenrichmentAnalysis is offred by WGCNA
 # # new function called: enrichmentAnalysis 
