@@ -1,8 +1,8 @@
 ####### 1st step in WGCNA ########
 ####### remove genes with low count reads #######
 
-library('ggplot2')
-library('reshape2')
+library(ggplot2)
+library(reshape2)
 
 setwd("/u/juxiao/AML_WGCNA")
 getwd()
