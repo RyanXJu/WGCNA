@@ -1,7 +1,7 @@
 library(ggplot2)
 library(reshape2)
 library(WGCNA)
-options(stringsAsFactors = TRUE)
+options(stringsAsFactors = FALSE)
 
 setwd("/u/juxiao/AML_WGCNA")
 getwd()
@@ -34,7 +34,7 @@ allTraits <- traitData[match(colnames(datExpr),traitData$sample_id),]
 names(allTraits)
 dim(allTraits)
 
-datTraits <- allTraits[, c("sex","tissue")]
+datTraits <- allTraits[, c("Sex","tissue")]
 dim(datTraits)
 
 ##************************** remove low read count genes **************
