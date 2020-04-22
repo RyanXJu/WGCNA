@@ -3,11 +3,7 @@ library(reshape2)
 library(WGCNA)
 options(stringsAsFactors = FALSE)
 
-setwd("/u/juxiao/AML_WGCNA")
-getwd()
-
-
-# ********************** load gene expression data ********************************
+############ ********************** load gene expression data *********************
 # load in TPM or FPKM or RPKM file
 exprFile = "/u/juxiao/Datasets/leucegene_data/genes_TPM.unstranded.annotated.tsv"
 datExpr = read.delim(exprFile, header = TRUE, row.names = 1)
@@ -21,21 +17,6 @@ datAnn[1,]
 datExpr = datExpr[,2:(dim(datExpr)[2]-4)]
 colnames(datExpr)
 rownames(datExpr)
-
-#************************* load in trait data **************************
-traitData = read.csv("/u/juxiao/Datasets/leucegene_data/IRIC - Leucegene Database.csv", header = TRUE);
-dim(traitData)
-colnames(traitData)
-
-traitData$sample_id <- paste("X",traitData$sample_id,sep = "")
-
-allTraits <- traitData[match(colnames(datExpr),traitData$sample_id),]
-
-names(allTraits)
-dim(allTraits)
-
-datTraits <- allTraits[, c("Sex","tissue")]
-dim(datTraits)
 
 ##************************** remove low read count genes **************
 countFile = "/u/juxiao/Datasets/leucegene_data/star_genes_readcount.unstranded.annotated.tsv"
@@ -89,8 +70,8 @@ RemoveLowCountGene <- function(y , method = NULL,
 }
 
 
-keep <- RemoveLowCountGene(countData, method = "avelogCPM")
-#keep <- RemoveLowCountGene(countData, method = "filterByExpr")
+# keep <- RemoveLowCountGene(countData, method = "avelogCPM")
+keep <- RemoveLowCountGene(countData, method = "filterByExpr")
 
 # density plot
 counts <- countData[keep,]
@@ -105,9 +86,35 @@ ggplot(x, aes(x=value, color=sample))+
 
 ### Prepare epression data for WGCNA
 datExpr0 <- datExpr[keep,]
+
+datExpr0.ensembl <- datExpr[keep,]
+
+# rownames(datExpr0) <- datAnn$Gene[match(rownames(datExpr0), rownames(datExpr))]
+# Extract EnsemblID from Ensembl_version_id (remove version id)
+rownames(datExpr0.ensembl) <- gsub("\\..*","",rownames(datExpr0))
+datExpr0.ensembl[1:3,1:3]
+
+datExpr0[1:3,1:3]
 dim(datExpr0)
 
-dim(datTraits)
+
+
+# ###########************************* load in trait data **************************
+# traitData = read.csv("/u/juxiao/Datasets/leucegene_data/IRIC - Leucegene Database.csv", header = TRUE);
+# dim(traitData)
+# colnames(traitData)
+# 
+# traitData$sample_id <- paste("X",traitData$sample_id,sep = "")
+# 
+# allTraits <- traitData[match(colnames(datExpr),traitData$sample_id),]
+# 
+# names(allTraits)
+# dim(allTraits)
+# 
+# datTraits <- allTraits[, c("Sex","tissue")]
+# dim(datTraits)
+# 
+# dim(datTraits)
 
 
 ############################################################ old code ###################################################
