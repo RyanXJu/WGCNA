@@ -30,7 +30,7 @@ outlier.rm <- TRUE
 ################## load input files ##################################
 cat("\n---------------------Loading expression data and trait data--------------------\n ")
 
-datExpr <- datExpr0  # keep is the filtered genes list
+datExpr <- datExpr0  
 dim(datExpr)
 
 datTraits <- datTraits0
@@ -110,13 +110,11 @@ nSamples = nrow(datExpr)
 nGenes
 nSamples
 
-# clust 1 contains the samples we want to keep.
 outlierSamples <- !keepSamples
 outlierSamples_names<- rownames(datExpr0[!keepSamples, ])
 outlierSamples_names
 cat("Romved outlier samples: \n")
 cat( outlierSamples_names)
-
 
 # Re-cluster samples
 cat("\n ------------------- Recalculate sampleTree ------------------- \n")
@@ -127,6 +125,7 @@ traitColors = numbers2colors(datTraits, signed = FALSE);
 plotDendroAndColors(sampleTree2, traitColors,
                     groupLabels = names(datTraits), 
                     main = "Sample dendrogram and trait heatmap")
+
 
 ############# network construction (soft-threshold selection) #########
 
