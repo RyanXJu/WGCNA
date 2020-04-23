@@ -23,7 +23,7 @@ library(topGO)
 
 options(stringsAsFactors = FALSE)
 
-directory <- "/u/juxiao/AML_WGCNA/WGCNA/pipeline"
+directory <- "~/AML_WGCNA/test_pipeline"
 dir.create(file.path(directory), showWarnings = FALSE)
 setwd(file.path(directory))
 

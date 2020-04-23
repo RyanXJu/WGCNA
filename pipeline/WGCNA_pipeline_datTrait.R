@@ -1,5 +1,5 @@
 ## Prepare trait data (select samples and their trait data)
-
+options(stringsAsFactors = FALSE)
 
 setwd("/u/juxiao/AML_WGCNA")
 getwd()
@@ -26,7 +26,7 @@ datTraits0$M3 <- as.integer(as.logical(datTraits0$dx_FAB == "AML-M3"))
 datTraits0$MLL <- as.integer(as.logical(datTraits0$cytogenetic.subgroup == "MLL translocations (+MLL FISH positive) (Irrespective of additional cytogenetic abnormalities)"))
 datTraits0$t8_21 <- as.integer(as.logical(datTraits0$WHO.2008 == "AML with t(8;21)(q22;q22); RUNX1-RUNX1T1"))
 
-datTraits0$Sex[datTraits0$Sex == "F"] <- 0
+datTraits0$Sex[which(datTraits0$Sex == "F")] <- 0
 datTraits0$Sex[datTraits0$Sex == "M"] <- 1
 datTraits0$Sex <- as.numeric(datTraits0$Sex)
 

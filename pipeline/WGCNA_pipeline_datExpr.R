@@ -1,6 +1,5 @@
 library(ggplot2)
 library(reshape2)
-library(WGCNA)
 options(stringsAsFactors = FALSE)
 
 ############ ********************** load gene expression data *********************

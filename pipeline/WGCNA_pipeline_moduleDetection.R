@@ -18,7 +18,7 @@ library(doParallel)
 library(WGCNA)
 options(stringsAsFactors = FALSE)
 
-directory <- "/u/juxiao/AML_WGCNA/WGCNA/pipeline"
+directory <- "~/AML_WGCNA/test_pipeline"
 dir.create(file.path(directory), showWarnings = FALSE)
 setwd(file.path(directory))
 
@@ -36,7 +36,7 @@ dim(datExpr)
 datTraits <- datTraits0
 dim(datTraits)
 
-############ data verification ######################
+################### data verification ################################
 cat("\n---------------------Remove no good genes and outlier samples--------------------\n ")
 # take log2 +1, transpose datExpr for WGCNA
 datExpr0 <- t(log2(datExpr+1))
@@ -63,7 +63,7 @@ if (!gsg$allOK)
 }
 dim(datExpr0)
 
-##################### remove outlier samples #################
+####################### remove outlier samples ######################
 # build sample tree based on chosen genes 
 sampleTree = hclust(dist(datExpr0, method = "euclidean"), method = "average")
 
@@ -127,7 +127,7 @@ plotDendroAndColors(sampleTree2, traitColors,
                     main = "Sample dendrogram and trait heatmap")
 
 
-############# network construction (soft-threshold selection) #########
+############ network construction (soft-threshold selection) #########
 
 cat("\n---------------------Select soft-threshold--------------------\n ")
 
@@ -246,7 +246,7 @@ save(MEs, moduleLabels, moduleColors, geneTree,
      file = "WGCNA_network.RData")
 
 
-####################### test module - traits correlation #######################
+#################### test module - traits correlation #################
 cat("\n ---------------------- Calculate Modules - traits correlation -------------------\n ")
 cor <- stats::cor
 moduleTraitCor = cor(MEs, datTraits, use = "p");
