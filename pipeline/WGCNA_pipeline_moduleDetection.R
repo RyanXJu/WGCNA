@@ -11,6 +11,10 @@
 # outlier.rm: If outlier samples are removed automaticlly (WGCNA suggest remove outliers)
 ###########################
 
+## module load R/3.6.1
+# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+# .libPaths()
+
 library(ggplot2)
 library(gplots)
 library(reshape2)
@@ -30,16 +34,18 @@ outlier.rm <- TRUE
 ################## load input files ##################################
 cat("\n---------------------Loading expression data and trait data--------------------\n ")
 
-datExpr <- datExpr0  
+datExpr <- read.delim("datExpr.tsv",header=TRUE, row.names=1) 
 dim(datExpr)
 
-datTraits <- datTraits0
+datTraits <- read.delim("datTraits.tsv", header = TRUE, row.names = 1)
 dim(datTraits)
 
 ################### data verification ################################
 cat("\n---------------------Remove no good genes and outlier samples--------------------\n ")
+# ???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 # take log2 +1, transpose datExpr for WGCNA
-datExpr0 <- t(log2(datExpr+1))
+# datExpr0 <- t(log2(datExpr+1))
+datExpr0 <- t(datExpr)
 
 # verify expression data
 gsg = goodSamplesGenes(datExpr0, verbose = 3)
@@ -103,7 +109,7 @@ table(clust)
 keepSamples = (clust== names(which.max(table(clust))))
 
 datExpr = datExpr0[keepSamples, ]
-datTraits = datTraits[keepSamples,]
+datTraits = datTraits[keepSamples, ] 
 
 nGenes = ncol(datExpr)
 nSamples = nrow(datExpr)

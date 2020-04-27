@@ -14,6 +14,9 @@
 # trait.sel : trait of intrest
 ############################
 
+# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+# .libPaths()
+
 library(ggplot2)
 library(gplots)
 library(reshape2)
@@ -123,6 +126,11 @@ GSPvalue = as.data.frame(corPvalueStudent(as.matrix(geneTraitSignificance), dim(
 colnames(geneTraitSignificance) = paste("GS.", trait.sel, sep="")
 colnames(GSPvalue) = paste("p.GS.", trait.sel, sep="")
 
+geneInModule.mm = data.frame( "MM" = geneModuleMembership[ moduleColors==module.sel , paste0("MM", module.sel, sep="")],
+                  "p.MM" = MMPvalue[ moduleColors==module.sel , paste0("p.MM", module.sel, sep="")],
+                  "GS" = geneTraitSignificance [ moduleColors==module.sel , paste("GS.", trait.sel, sep="")],
+                  "p.GS" = GSPvalue[ moduleColors==module.sel , paste("p.GS.", trait.sel, sep="")])
+rownames(geneInModule.mm) <- rownames(geneModuleMembership)[ moduleColors==module.sel]
 
 sizeGrWindow(7, 7)
 par(mfrow = c(1,1))
@@ -164,12 +172,19 @@ geneInModule
 library("biomaRt")
 geneAnn<- getBM(attributes=c('ensembl_gene_id_version', 
                                   'ensembl_gene_id', 
-                                  'hgnc_symbol'), 
+                                  'hgnc_symbol',
+                             'entrezgene_id'), 
                      filters = geneID.type, 
                      values = colnames(datExpr), 
                      mart = useMart("ensembl",dataset="hsapiens_gene_ensembl"))
 geneAnn
 
+
+# 
+geneInModule.Ann = geneAnn[match(geneInModule,geneAnn[[geneID.type]]),]
+geneInModule.df = merge(geneInModule.Ann, geneInModule.mm, by.x ="ensembl_gene_id_version" ,  by.y = "row.names" )
+write.table(geneInModule.df, file = paste0("geneInModule",module.sel,trait.sel,sep="_"), 
+            quote = FALSE, col.names=NA, sep="\t" )
 
 ######################### GO term enrichment analysis ########################
 cat("\n ---------------GO enrichment analysis of module : ---------------- \n ")
@@ -215,74 +230,90 @@ print(head(tab, 10))
 
 ######################### KEGG  #################################################
 cat("\n ---------------KEGG analysis of module : ---------------- \n ")
+# 
+# # BiocManager::install("KEGGREST")
+# library(KEGGREST)
+# 
+# # all databases
+# listDatabases()
+# # keggList("organism")
+# # keggList("hsa")
+# 
+# # Pull all pathways for AT  
+# pathways.list <- keggList("pathway", "hsa")
+# head(pathways.list)
+# 
+# # Pull all genes for each pathway
+# pathway.codes <- sub("path:", "", names(pathways.list)) 
+# names(pathways.list) <- pathway.codes
+# genes.by.pathway <- sapply(pathway.codes,
+#                            function(pwid){
+#                              pw <- keggGet(pwid)
+#                              if (is.null(pw[[1]]$GENE)) return(NA)
+#                              pw2 <- pw[[1]]$GENE[c(FALSE, TRUE)] # may need to modify this to c(FALSE, TRUE) for other organisms
+#                              pw2 <- unlist(lapply(strsplit(pw2, split = ";", fixed = T), function(x)x[1]))
+#                              return(pw2)
+#                            }
+# )
+# head(genes.by.pathway)
+# 
+# geneList_KEGG <- geneModuleMembership[geneInModule, paste0("MM", module.sel, sep="")]
+# names(geneList_KEGG) <- geneAnn$hgnc_symbol[match(geneInModule, geneAnn[[geneID.type]] )]
+# head(geneList_KEGG)
+# 
+# # Wilcoxon test for each pathway
+# pVals.by.pathway <- t(sapply(names(genes.by.pathway),
+#     function(pathway) {
+#         # print(pathway)
+#         pathway.genes <- genes.by.pathway[[pathway]]
+#         
+#         if (is.na(pathway.genes[1])){
+#           p.value <- NA
+#           list.genes.in.pathway <- 0
+#         }
+#         
+#         else{
+#           list.genes.in.pathway <- intersect(names(geneList_KEGG), pathway.genes)
+#           list.genes.not.in.pathway <- setdiff(names(geneList_KEGG), list.genes.in.pathway)
+#           scores.in.pathway <- geneList_KEGG[list.genes.in.pathway]
+#           scores.not.in.pathway <- geneList_KEGG[list.genes.not.in.pathway]
+#           
+#           if (length(scores.in.pathway) > 0){
+#             p.value <- wilcox.test(scores.in.pathway, scores.not.in.pathway, alternative = "less")$p.value
+#           }
+#           else{
+#             p.value <- NA
+#           }
+#         }
+#         
+#         return(c(p.value = p.value , Annotated = length(list.genes.in.pathway)))
+#     }
+# ))
+# 
+# # Assemble output table
+# outdat <- data.frame(pathway.code = rownames(pVals.by.pathway))
+# outdat$pathway.name <- pathways.list[outdat$pathway.code]
+# outdat$p.value <- pVals.by.pathway[,"p.value"]
+# outdat$Annotated <- pVals.by.pathway[,"Annotated"]
+# outdat <- outdat[order(outdat$p.value),]
+# print(head(outdat,10))
 
-# BiocManager::install("KEGGREST")
-library(KEGGREST)
 
-# all databases
-listDatabases()
-# keggList("organism")
-# keggList("hsa")
+################ KEGG with clusterProfiler #################
+library(clusterProfiler)
 
-# Pull all pathways for AT  
-pathways.list <- keggList("pathway", "hsa")
-head(pathways.list)
+library(org.Hs.eg.db)
 
-# Pull all genes for each pathway
-pathway.codes <- sub("path:", "", names(pathways.list)) 
-names(pathways.list) <- pathway.codes
-genes.by.pathway <- sapply(pathway.codes,
-                           function(pwid){
-                             pw <- keggGet(pwid)
-                             if (is.null(pw[[1]]$GENE)) return(NA)
-                             pw2 <- pw[[1]]$GENE[c(FALSE, TRUE)] # may need to modify this to c(FALSE, TRUE) for other organisms
-                             pw2 <- unlist(lapply(strsplit(pw2, split = ";", fixed = T), function(x)x[1]))
-                             return(pw2)
-                           }
-)
-head(genes.by.pathway)
-
-geneList_KEGG <- geneModuleMembership[geneInModule, paste0("MM", module.sel, sep="")]
-names(geneList_KEGG) <- geneAnn$hgnc_symbol[match(geneInModule, geneAnn[[geneID.type]] )]
-head(geneList_KEGG)
-
-# Wilcoxon test for each pathway
-pVals.by.pathway <- t(sapply(names(genes.by.pathway),
-    function(pathway) {
-        # print(pathway)
-        pathway.genes <- genes.by.pathway[[pathway]]
-        
-        if (is.na(pathway.genes[1])){
-          p.value <- NA
-          list.genes.in.pathway <- 0
-        }
-        
-        else{
-          list.genes.in.pathway <- intersect(names(geneList_KEGG), pathway.genes)
-          list.genes.not.in.pathway <- setdiff(names(geneList_KEGG), list.genes.in.pathway)
-          scores.in.pathway <- geneList_KEGG[list.genes.in.pathway]
-          scores.not.in.pathway <- geneList_KEGG[list.genes.not.in.pathway]
-          
-          if (length(scores.in.pathway) > 0){
-            p.value <- wilcox.test(scores.in.pathway, scores.not.in.pathway, alternative = "less")$p.value
-          }
-          else{
-            p.value <- NA
-          }
-        }
-        
-        return(c(p.value = p.value , Annotated = length(list.genes.in.pathway)))
-    }
-))
-
-# Assemble output table
-outdat <- data.frame(pathway.code = rownames(pVals.by.pathway))
-outdat$pathway.name <- pathways.list[outdat$pathway.code]
-outdat$p.value <- pVals.by.pathway[,"p.value"]
-outdat$Annotated <- pVals.by.pathway[,"Annotated"]
-outdat <- outdat[order(outdat$p.value),]
-print(head(outdat,10))
-
+ekegg = enrichKEGG(gene = geneInModule.df$entrezgene_id, 
+           organism = "hsa", 
+           keyType = "kegg", 
+           pvalueCutoff = 0.05, 
+           pAdjustMethod = "BH", 
+           universe, minGSSize = 10, 
+           maxGSSize = 500, 
+           qvalueCutoff = 0.2, 
+           use_internal_data = FALSE)
+head(summary(ekegg))
 
 # ################# hub genes based on kIM (intramodular connectivity)  ###########
 # adj_inModule = adjacency(datExpr[, moduleColors == module.sel], 
