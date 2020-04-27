@@ -21,15 +21,17 @@ In this project, I use WGCNA to mine the gene expression data extract from RNA-s
 
 * [WGCNA](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-559)
 
-Weighted correlation network analysis, also known as weighted gene co-expression network analysis (WGCNA), is a widely used data mining method especially for studying biological networks based on pairwise correlations between variables. While it can be applied to most high-dimensional data sets, it has been most widely used in genomic applications. It allows one to define modules (clusters), intramodular hubs, and network nodes with regard to module membership, to study the relationships between co-expression modules, and to compare the network topology of different networks (differential network analysis). WGCNA can be used as a data reduction technique (related to oblique factor analysis), as a clustering method (fuzzy clustering), as a feature selection method (e.g. as gene screening method), as a framework for integrating complementary (genomic) data (based on weighted correlations between quantitative variables), and as a data exploratory technique
+Wweighted gene co-expression network analysis (WGCNA), is a widely used data mining method especially for studying biological networks based on pairwise correlations between variables. It has been most widely used in genomic applications (While it can be applied to most high-dimensional data sets). 
+WGCNA allows to define modules (clusters), intramodular hubs, and network nodes with regard to module membership, to study the relationships between co-expression modules, and to compare the network topology of different networks (differential network analysis). WGCNA can be used as a data reduction technique, as a clustering method (fuzzy clustering), as a feature selection method, as a framework for integrating complementary (genomic) data (based on weighted correlations between quantitative variables), and as a data exploratory technique.
 
 * [Leucegene](https://leucegene.ca/)
 
+Quebec-based team of multidisciplinary scientists, clinicians, economists and lawyers with the mission to change the treatment of acute myeloid leukemia (AML) using precision therapy approaches. The AML cohort provides by far one of the largest genomic datasets for AML studies.
+
+
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+* [R 3.6.1]
+* [WGCNA package]
 
 
 
