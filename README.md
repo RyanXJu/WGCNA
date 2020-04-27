@@ -34,9 +34,19 @@ Quebec-based team of multidisciplinary scientists, clinicians, economists and la
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Please run the R code by order, each part will generate informatif plots for user to make parameter decisions for the following part. Each part will automaticlly save a Rdata for the following part.
 
-* WGCNA_moduleDetection.R
-* WGCNA_moduleAnalysis.R
+* WGCNA_1_outlierDetection.R : 
+  remove low variance genes and genes with too much missing values, detect outlier samples
+
+* WGCNA_2_scaleFreeTopology.R : 
+  Gather topology information for soft-threshold selection
+
+* WGCNA_moduleDetection.R :
+  Detect gene expression modules, calculate correlation between modules and traits
+  
+* WGCNA_moduleAnalysis.R :
+  Analyze module of interest, calculate gene-trait correlation, find hubgene, GO enrichment analysis, KEGG path way analysis
 
 
 
