@@ -1,5 +1,8 @@
 # **  WGCNA pipeline part 1:   **
 
+# remove genes with too many missing values, or low variance
+# build sample tree with kept genes to detect outliers
+
 # ###### input: ###########################################################
 # datExpr: normalized gene expression data (rownames--genes, colnames--samples)
 # datTrait: trait data of all the samples (rownames--samples, colnames--trait)
@@ -48,14 +51,14 @@ if (useLog == "Y"| useLog == "y"){
   datExpr = log(datExpr+log.add, base=log.base)
 }
 
-datExpr0 <- t(datExpr)
+datExpr1 <- t(datExpr)
   
 
 ################### data verification ################################
 cat("\n---------------------Remove no good genes and outlier samples--------------------\n ")
 
 # verify expression data
-gsg = goodSamplesGenes(datExpr0, verbose = 3)
+gsg = goodSamplesGenes(datExpr1, verbose = 3)
 # goodSamplesGenes() default parameters
 # minFraction = 1/2 :minimum fraction of non-missing samples for a gene
 # minNSamples =4 minimum number of non-missing samples for a gene
@@ -68,17 +71,17 @@ if (!gsg$allOK)
 {
   # Optionally, print the gene and sample names that were removed:
   if (sum(!gsg$goodGenes)>0) 
-    printFlush(paste("Removing genes:", paste(colnames(datExpr0)[!gsg$goodGenes], collapse = ", ")));
+    printFlush(paste("Removing genes:", paste(colnames(datExpr1)[!gsg$goodGenes], collapse = ", ")));
   if (sum(!gsg$goodSamples)>0) 
-    printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
+    printFlush(paste("Removing samples:", paste(rownames(datExpr1)[!gsg$goodSamples], collapse = ", ")));
   # Remove the offending genes and samples from the data:
-  datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
+  datExpr1 = datExpr1[gsg$goodSamples, gsg$goodGenes]
 }
-dim(datExpr0)
+dim(datExpr1)
 
 ####################### remove outlier samples ######################
 # build sample tree based on chosen genes 
-sampleTree = hclust(dist(datExpr0, method = "euclidean"), method = "average")
+sampleTree = hclust(dist(datExpr1, method = "euclidean"), method = "average")
 
 # Plot the sample tree
 sizeGrWindow(12,9)
@@ -99,3 +102,6 @@ par(mar = c(1,6,2,1))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, 
      cex.axis = 1.2, cex.main = 2)
 dev.off ()
+
+
+save(datExpr1, datTraits, sampleTree, file = "sampleTree.Rdata")
