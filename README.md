@@ -35,8 +35,8 @@ Quebec-based team of multidisciplinary scientists, clinicians, economists and la
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-*WGCNA_moduleDetection.R
-*WGCNA_moduleAnalysis.R
+* WGCNA_moduleDetection.R
+* WGCNA_moduleAnalysis.R
 
 
 
