@@ -50,7 +50,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-[Ryan Xiao Ju](https://twitter.com/ryanthewolf) - ryan.ju0505@gmail.com
+[Ryan Xiao Ju](https://twitter.com/RyanXJu0505) - ryan.ju0505@gmail.com
 
 Project Link: [https://github.com/RyanXJu/WGCNA/](https://github.com/RyanXJu/WGCNA/)
 
