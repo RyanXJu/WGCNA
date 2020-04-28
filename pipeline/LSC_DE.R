@@ -1,7 +1,8 @@
 library(dplyr)
 options(stringsAsFactors = FALSE)
 
-directory <- "~/AML_WGCNA/WGCNA/test"
+# directory <- "~/AML_WGCNA/WGCNA/test"
+directory <- "~/AML_WGCNA/test_pipeline"
 dir.create(file.path(directory), showWarnings = FALSE)
 setwd(file.path(directory))
 
