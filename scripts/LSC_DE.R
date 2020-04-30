@@ -42,7 +42,16 @@ dim(allTraits)
 
 datTraits0$LIC.abs = allTraits$LIC.frequency.absolute[match(rownames(datTraits0), allTraits$sample_id)]
 
-print(version)
+# print(version)
+
+#### to creat anonymous test data on Github #########
+# datExpr0 <- datExpr0/1000
+# colnames(datExpr0) <- c(paste0("sample", c(1:dim(datTraits0)[1]), sep=""))
+# 
+# rownames(datTraits0) <- c(paste0("sample", c(1:dim(datTraits0)[1]), sep=""))
+# colnames(datTraits0) <- c("class", "value_abs")
+####################################################
+
 
 write.table(datExpr0, quote = FALSE, file = "datExpr.tsv", col.names=NA, sep="\t")
 write.table(datTraits0, quote = FALSE, file = "datTraits.tsv", col.names = NA, sep="\t")
