@@ -8,8 +8,8 @@
 
 
 ## module load R/3.6.1
-# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-# .libPaths()
+.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+.libPaths()
 
 cat("\n
     *********************************\n
@@ -67,6 +67,7 @@ plot(sft$fitIndices[,1], sft$fitIndices[,5],
      main = paste("Mean connectivity"))
 text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
 abline(h=sft$fitIndices[sft.power,5],col="red")
+dev.off()
 
 
 # use WGCNA's cor() function
@@ -94,6 +95,7 @@ plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
                     "Module colors",
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05)
+dev.off()
 
 ## save result
 moduleLabels = net$colors
@@ -117,7 +119,7 @@ print(topHubs)
 
 
 #################### test module - traits correlation #################
-cat("\n -------- Calculate Modules - traits correlation -------------\n")
+cat("\n_-------- Calculate Modules - traits correlation -------------\n")
 cor <- stats::cor
 moduleTraitCor = cor(MEs, datTraits, use = "p");
 moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nrow(datExpr2))
@@ -153,6 +155,7 @@ labeledHeatmap(Matrix = moduleTraitCor,
                cex.text = 0.5,
                zlim = c(-1,1),
                main = paste("Module-trait relationships"))
+dev.off()
 
 
 # save WGCNA data

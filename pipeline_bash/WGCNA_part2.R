@@ -8,8 +8,9 @@
 
 
 ## module load R/3.6.1
-# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-# .libPaths()
+.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+.libPaths()
+
 cat("\n
     *********************************\n
     *********  WGCNA part2  *********\n
@@ -49,6 +50,7 @@ plot(sampleTree, main = "Sample clustering", sub="", xlab="", cex.lab = 1.5,
      cex.axis = 1.5, cex.main = 2)
 # Plot the cut line
 abline(h = cutHeight, col = "red");
+dev.off()
 
 
 # Determine cluster under the line
@@ -78,6 +80,7 @@ pdf("Part2_SampleDendrogram.pdf", width=12, height=8)
 plotDendroAndColors(sampleTree2, traitColors,
                     groupLabels = names(datTraits), 
                     main = "Sample dendrogram and trait heatmap")
+dev.off()
 
 
 ############ network construction (soft-threshold selection) #########
@@ -123,6 +126,7 @@ plot(sft$fitIndices[,1], sft$fitIndices[,5],
      xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
      main = paste("Mean connectivity"))
 text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
+dev.off()
 
 
 save(datExpr2, datTraits, powers, sft,  file = "topology.Rdata")

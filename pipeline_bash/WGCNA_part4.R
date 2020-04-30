@@ -8,8 +8,8 @@
 
 
 ## module load R/3.6.1
-# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-# .libPaths()
+.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+.libPaths()
 
 cat("\n
     *********************************\n
@@ -45,10 +45,10 @@ netInfo <- load("network.RData")
 # netInfo
 
 ## user enter : geneID type (since KEGGREST can only take symobl, this info is needed to convert geneids later)
-cat("--------------- Confirm the geneID type used in the expression data : ---------------- \n")
-cat(" this pipeline can only take \n [1]\"ensembl_gene_id\" 
+cat("\n--------------- Confirm the geneID type used in the expression data : ---------------- \n")
+cat("\nThis pipeline can only take \n [1]\"ensembl_gene_id\" 
     \n [2]\"ensembl_gene_id_version\" 
-    \n [3]\"hgnc_symbol\"")
+    \n [3]\"hgnc_symbol\" \n")
 geneID.type.list = c("ensembl_gene_id", "ensembl_gene_id_version", "hgnc_symbol")
 while (!(geneID.sel %in% c(1:3))) {
   cat("Enter the number of expression data geneID type : ")
@@ -63,24 +63,24 @@ while (!(geneID.sel %in% c(1:3))) {
 
 
 ## user enter : color of module of intrest
-cat("---------------Number of genes in each module: ---------------- \n")
+cat("\n---------------Number of genes in each module: ---------------- \n")
 print(as.data.frame(table(moduleColors)))
 
 while (!(module.sel %in% unique(moduleColors))) {
   cat("Enter the color of the module: ")
   module.sel <- readLines("stdin", 1)
-  if (!(module.sel %in% unique(moduleColors))) { cat("The entered color module does'nt exist, please Enter a color")}
+  if (!(module.sel %in% unique(moduleColors))) { cat("The entered color module does'nt exist, please Enter a color\n")}
 }
 
 
 ## user enter : trait of intrest
-cat("---------------Traits : ---------------- \n")
+cat("\n---------------Traits : ---------------- \n")
 print(colnames(datTraits))
 
 while (!(trait.sel %in% colnames(datTraits))) {
   cat("Enter the trait of intrest: ")
   trait.sel <- readLines("stdin",1)
-  if (!(trait.sel %in% colnames(datTraits))) { cat("The entered trait does'nt exist, please Enter a trait")}
+  if (!(trait.sel %in% colnames(datTraits))) { cat("The entered trait does'nt exist, please Enter a trait\n")}
 }
 
 
@@ -96,8 +96,7 @@ par(mar = c(6, 6, 3, 3))
 plotEigengeneNetworks(MET, "", marDendro = c(0,4,1,2),
                       marHeatmap = c(5,4,1,2), cex.lab = 0.8,
                       xLabelsAngle= 90)
-
-
+dev.off()
 
 
 ############### Gene Module Membership ##############################################
@@ -136,7 +135,7 @@ verboseScatterplot(abs(geneModuleMembership[ moduleColors==module.sel , paste0("
                    ylab = paste("Gene significance (gene trait cor) for ", trait.sel, sep = ""),
                    main = paste("Module membership vs. gene significance\n"),
                    cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2, col = module.sel)
-
+dev.off()
 
 
 # genes in the selected module
@@ -160,7 +159,8 @@ geneAnn<- getBM(attributes=c('ensembl_gene_id_version',
 # 
 geneInModule.Ann = geneAnn[match(geneInModule,geneAnn[[geneID.type]]),]
 geneInModule.df = merge(geneInModule.Ann, geneInModule.mm, by.x ="ensembl_gene_id_version" ,  by.y = "row.names" )
-write.table(geneInModule.df, file = paste0("geneInModule",module.sel,trait.sel,sep="_"), 
+
+write.table(geneInModule.df, file = paste0(paste("geneInModule",module.sel,trait.sel,sep="_"), ".tsv"), 
             quote = FALSE, col.names=NA, sep="\t" )
 
 
@@ -267,3 +267,4 @@ outdat$Annotated <- pVals.by.pathway[,"Annotated"]
 outdat <- outdat[order(outdat$p.value),]
 print(head(outdat,10))
 
+cat("\n--------------------- Part4 Done -----------------------------\n")

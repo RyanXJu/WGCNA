@@ -10,8 +10,8 @@
 
 
 ## module load R/3.6.1
-# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-# .libPaths()
+.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+.libPaths()
 
 cat("\n
     *********************************\n
@@ -123,6 +123,8 @@ pdf("Part1_SampleClustering.pdf", width=12, height=8)
 par(mar = c(1,6,2,1))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, 
      cex.axis = 1.2, cex.main = 2)
+dev.off()
+
 
 save(datExpr1, datTraits, sampleTree, file = "sampleTree.Rdata")
 cat("\n------------------- Part1 Done ------------------------------\n")
