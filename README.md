@@ -34,6 +34,7 @@ Quebec-based team of multidisciplinary scientists, clinicians, economists and la
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+# use in Rstudio
 Please run the R code by order, each part will generate informatif plots for user to make parameter decisions for the following part. Each part will automaticlly save a Rdata for the following part.
 
 * WGCNA_1_outlierDetection.R : 
