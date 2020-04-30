@@ -49,6 +49,21 @@ Please run the R code by order, each part will generate informatif plots for use
 * WGCNA_moduleAnalysis.R :
   Analyze module of interest, calculate gene-trait correlation, find hubgene, GO enrichment analysis, KEGG path way analysis
 
+### use in Terminal
+Please run the bash code by order, each part will launch the corresponding R code. Each part will automaticlly save a Rdata and generate informative pdf plots for parameter selection in the following part.
+* WGCNA_part1.sh:
+ remove low variance genes and genes with too much missing values, detect outlier samples
+ 
+* WGCNA_part2.sh:
+  Gather topology information for soft-threshold selection
+
+* WGCNA_part3.sh:
+  Detect gene expression modules, calculate correlation between modules and traits
+
+* WGCNA_part4.sh:
+  Analyze module of interest, calculate gene-trait correlation, find hubgene, GO enrichment analysis, KEGG path way analysis
+
+
 
 
 <!-- LICENSE -->
