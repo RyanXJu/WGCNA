@@ -16,7 +16,7 @@ In this project, I use WGCNA to mine the gene expression data extract from RNA-s
 
 * [WGCNA](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-559)
 
-Wweighted gene co-expression network analysis (WGCNA), is a widely used data mining method especially for studying biological networks based on pairwise correlations between variables. It has been most widely used in genomic applications (While it can be applied to most high-dimensional data sets). 
+Weighted gene co-expression network analysis (WGCNA), is a widely used data mining method especially for studying biological networks based on pairwise correlations between variables. It has been most widely used in genomic applications (While it can be applied to most high-dimensional data sets). 
 WGCNA allows to define modules (clusters), intramodular hubs, and network nodes with regard to module membership, to study the relationships between co-expression modules, and to compare the network topology of different networks (differential network analysis). WGCNA can be used as a data reduction technique, as a clustering method (fuzzy clustering), as a feature selection method, as a framework for integrating complementary (genomic) data (based on weighted correlations between quantitative variables), and as a data exploratory technique.
 
 * [Leucegene](https://leucegene.ca/)
