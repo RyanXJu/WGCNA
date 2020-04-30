@@ -27,7 +27,7 @@ library(WGCNA)
 options(stringsAsFactors = FALSE)
 
 
-cat("Enter working directory: ")
+cat("Enter working/output directory: ")
 directory <- readLines("stdin", 1)
 
 dir.create(file.path(directory), showWarnings = FALSE)

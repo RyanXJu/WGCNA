@@ -127,7 +127,8 @@ geneInModule.mm = data.frame( "MM" = geneModuleMembership[ moduleColors==module.
 rownames(geneInModule.mm) <- rownames(geneModuleMembership)[ moduleColors==module.sel]
 
 
-pdf("Part4_geneModuleMembership_geneSignificance.pdf", width=12, height=8)
+plotname = paste("Part4_geneInModule_",module.sel,".pdf", sep="")
+pdf(plotname, width=12, height=8)
 par(mar = c(6, 6, 3, 3))
 verboseScatterplot(abs(geneModuleMembership[ moduleColors==module.sel , paste0("MM", module.sel, sep="")]),
                    abs(geneTraitSignificance[moduleColors==module.sel, 1]),
