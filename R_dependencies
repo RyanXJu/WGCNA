@@ -1,0 +1,29 @@
+Dependencies:
+R: 3.6.1
+
+packages:
+ggplot2
+reshape2
+doParallel
+WGCNA
+biomaRt
+topGO
+KEGGREST
+
+
+library(ggplot2)
+
+library(gplots)
+
+library(reshape2)
+
+library(doParallel)
+
+library(WGCNA)
+
+library(biomaRt)
+
+library(topGO)
+
+# BiocManager::install("KEGGREST")
+library(KEGGREST)
