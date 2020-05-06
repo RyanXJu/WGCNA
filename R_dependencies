@@ -1,7 +1,9 @@
-Dependencies:
+## Dependencies:
+
+# version
 R: 3.6.1
 
-packages:
+# Packages:
 ggplot2
 reshape2
 doParallel
@@ -10,21 +12,28 @@ biomaRt
 topGO
 KEGGREST
 
+
+## Install packages
 install.packages("ggplot2")
 library(ggplot2)
+
 
 install.packages("gplots")
 library(gplots)
 
+
 install.packages("reshape2")
 library(reshape2)
+
 
 install.packages("doParallel")
 library(doParallel)
 
+
 install.packages("BiocManager")
 BiocManager::install("WGCNA") 
 library(WGCNA)
+
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -36,6 +45,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("topGO")
 library(topGO)
+
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
