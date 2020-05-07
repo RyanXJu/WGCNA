@@ -52,7 +52,7 @@ Please run the R code by order, each part will generate informatif plots for use
 ### use in Terminal
 Please run the bash code by order, each part will launch the corresponding R code. Each part will automaticlly save a Rdata and generate informative pdf plots for parameter selection in the following part.
 
-* WGCNA_part1.sh:
+* WGCNA_part1.sh:  
  remove low variance genes and genes with too much missing values, detect outlier samples  
  ***Usage***: ./WGCNA_part1.sh -o [Output Path] -d [Expression data] -t [Traits data] -l [log base] -c [add constant before log]
  ***Help***:  ./WGCNA_part1.sh -h
