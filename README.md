@@ -59,17 +59,17 @@ Please run the bash code by order, each part will launch the corresponding R cod
  
 * WGCNA_part2.sh:  
   Gather topology information for soft-threshold selection  
-  *Usage*: ./WGCNA_part2.sh -o [PATH of sampleTree.Rdata] -c [Height]
+  *Usage*: ./WGCNA_part2.sh -o [PATH of sampleTree.Rdata] -c [Height]  
   *Help*:  ./WGCNA_part2.sh -h
 
 * WGCNA_part3.sh:  
   Detect gene expression modules, calculate correlation between modules and traits  
-  *Usage*: ./WGCNA_part3.sh -o [PATH of topology.Rdata] -s [Soft-threshold]
+  *Usage*: ./WGCNA_part3.sh -o [PATH of topology.Rdata] -s [Soft-threshold]  
   *Help*:  ./WGCNA_part3.sh -h
 
 * WGCNA_part4.sh:  
   Analyze module of interest, calculate gene-trait correlation, find hubgene, GO enrichment analysis, KEGG path way analysis  
-  *Usage*: ./WGCNA_part4.sh -o [PATH of network.Rdata] -m [Module] -t [Trait] -i [GeneID type]
+  *Usage*: ./WGCNA_part4.sh -o [PATH of network.Rdata] -m [Module] -t [Trait] -i [GeneID type]  
   *Help*:  ./WGCNA_part4.sh -h
 
 
