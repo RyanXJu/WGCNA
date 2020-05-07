@@ -131,7 +131,7 @@ pdf("Part1_SampleClustering.pdf", width=12, height=8)
 par(mar = c(1,6,2,1))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, 
      cex.axis = 1.2, cex.main = 2)
-dev.off()
+invisible(dev.off())
 
 
 save(datExpr1, datTraits, sampleTree, file = "sampleTree.Rdata")

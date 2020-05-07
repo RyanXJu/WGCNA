@@ -8,8 +8,8 @@
 
 
 ## module load R/3.6.1
-.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-.libPaths()
+# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+# .libPaths()
 
 cat("\n
     *********************************\n
@@ -24,42 +24,34 @@ library(doParallel)
 library(WGCNA)
 library(biomaRt)
 library(topGO)
-# BiocManager::install("KEGGREST")
 library(KEGGREST)
 options(stringsAsFactors = FALSE)
 
 
-cat("Enter working directory \nLocation of \"network.RData\": ")
-directory <- readLines("stdin", 1)
+# cat("Enter working directory \nLocation of \"network.RData\": ")
+# directory <- readLines("stdin", 1)
+
+directory  = commandArgs(trailingOnly=TRUE)[1]
+geneID.sel = as.numeric(commandArgs(trailingOnly=TRUE)[2])
+module.sel = commandArgs(trailingOnly=TRUE)[3]
+trait.sel  = commandArgs(trailingOnly=TRUE)[4]
+
 
 setwd(file.path(directory))
-getwd()
+# getwd()
 
 
-geneID.sel <- ""  
-module.sel <- ""
-trait.sel <- ""
+# geneID.sel <- ""  
+# module.sel <- ""
+# trait.sel <- ""
 
 ############### load data ###########################################################
 netInfo <- load("network.RData")
 # netInfo
 
-## user enter : geneID type (since KEGGREST can only take symobl, this info is needed to convert geneids later)
-cat("\n--------------- Confirm the geneID type used in the expression data : ---------------- \n")
-cat("\nThis pipeline can only take \n [1]\"ensembl_gene_id\" 
-    \n [2]\"ensembl_gene_id_version\" 
-    \n [3]\"hgnc_symbol\" \n")
 geneID.type.list = c("ensembl_gene_id", "ensembl_gene_id_version", "hgnc_symbol")
-while (!(geneID.sel %in% c(1:3))) {
-  cat("Enter the number of expression data geneID type : ")
-  geneID.sel <- readLines("stdin", 1)
-  if (!(geneID.sel %in%  c(1:3))) { cat("The geneID type is not supported, please choose 
-                                         \n [1] for \"ensembl_gene_id\" 
-                                         \n [2] for \"ensembl_gene_id_version\"
-                                         \n [3] for \"hgnc_symbol\"")}
-  geneID.type <<- geneID.type.list[as.integer(geneID.sel)]
-}
-# geneID.type
+geneID.type <- geneID.type.list[as.integer(geneID.sel)]
+# print(geneID.type)
 
 
 ## user enter : color of module of intrest
@@ -67,9 +59,8 @@ cat("\n---------------Number of genes in each module: ---------------- \n")
 print(as.data.frame(table(moduleColors)))
 
 while (!(module.sel %in% unique(moduleColors))) {
-  cat("Enter the color of the module: ")
+  cat("The entered color module does'nt exist, please Enter a color\n")
   module.sel <- readLines("stdin", 1)
-  if (!(module.sel %in% unique(moduleColors))) { cat("The entered color module does'nt exist, please Enter a color\n")}
 }
 
 
@@ -78,9 +69,8 @@ cat("\n---------------Traits : ---------------- \n")
 print(colnames(datTraits))
 
 while (!(trait.sel %in% colnames(datTraits))) {
-  cat("Enter the trait of intrest: ")
+  cat("The entered trait does'nt exist, please Enter a trait\n")
   trait.sel <- readLines("stdin",1)
-  if (!(trait.sel %in% colnames(datTraits))) { cat("The entered trait does'nt exist, please Enter a trait\n")}
 }
 
 
@@ -96,7 +86,7 @@ par(mar = c(6, 6, 3, 3))
 plotEigengeneNetworks(MET, "", marDendro = c(0,4,1,2),
                       marHeatmap = c(5,4,1,2), cex.lab = 0.8,
                       xLabelsAngle= 90)
-dev.off()
+invisible(dev.off())
 
 
 ############### Gene Module Membership ##############################################
@@ -136,7 +126,7 @@ verboseScatterplot(abs(geneModuleMembership[ moduleColors==module.sel , paste0("
                    ylab = paste("Gene significance (gene trait cor) for ", trait.sel, sep = ""),
                    main = paste("Module membership vs. gene significance\n"),
                    cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2, col = module.sel)
-dev.off()
+invisible(dev.off())
 
 
 # genes in the selected module

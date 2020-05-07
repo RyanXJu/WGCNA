@@ -25,8 +25,7 @@ library(WGCNA)
 options(stringsAsFactors = FALSE)
 
 directory = commandArgs(trailingOnly=TRUE)[1]
-cutHeight = as.numeric(commandArgs(trailingOnly=TRUE)[2])
-
+cutHeight = commandArgs(trailingOnly=TRUE)[2]
 
 
 setwd(file.path(directory))
@@ -44,7 +43,13 @@ lnames = load("sampleTree.Rdata")
 #     \n(Please consult Part1_SampleClustering.pdf to decide cutting height ): ")
 # cutHeight = as.numeric(readLines("stdin", 1))
 
-cat("cut height: ", cutHeight)
+if (is.na(cutHeight)) {
+    cat("No cutHeight provided, will keep all the samples\n")
+    cutHeight = max(sampleTree$height)*1.05  # make the cut line higher than all branches
+}else{
+    cat("Cut sample tree at ", cutHeight)
+    cutHeight = as.numeric(cutHeight)
+}
 
 
 # Plot the sample tree
@@ -55,7 +60,7 @@ plot(sampleTree, main = "Sample clustering", sub="", xlab="", cex.lab = 1.5,
      cex.axis = 1.5, cex.main = 2)
 # Plot the cut line
 abline(h = cutHeight, col = "red");
-dev.off()
+invisible(dev.off())
 
 
 # Determine cluster under the line
@@ -85,7 +90,7 @@ pdf("Part2_SampleDendrogram.pdf", width=12, height=8)
 plotDendroAndColors(sampleTree2, traitColors,
                     groupLabels = names(datTraits), 
                     main = "Sample dendrogram and trait heatmap")
-dev.off()
+invisible(dev.off())
 
 
 ############ network construction (soft-threshold selection) #########
@@ -131,7 +136,7 @@ plot(sft$fitIndices[,1], sft$fitIndices[,5],
      xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
      main = paste("Mean connectivity"))
 text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
-dev.off()
+invisible(dev.off())
 
 
 save(datExpr2, datTraits, powers, sft,  file = "topology.Rdata")
