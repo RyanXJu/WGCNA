@@ -26,7 +26,7 @@ library(topGO)
 
 options(stringsAsFactors = FALSE)
 
-directory <- "~/AML_WGCNA/test_pipeline"
+directory <- "~/AML_WGCNA/Leucegene/avelog_lscFreqSamples_0505"
 dir.create(file.path(directory), showWarnings = FALSE)
 setwd(file.path(directory))
 

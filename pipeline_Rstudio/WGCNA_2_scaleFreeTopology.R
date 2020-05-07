@@ -11,7 +11,7 @@
 # .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
 # .libPaths()
 
-directory <- "~/AML_WGCNA/test_pipeline"
+directory <- "~/AML_WGCNA/Leucegene/fltByExpr_lscFreqSamples_0505"
 
 library(ggplot2)
 library(gplots)

@@ -10,81 +10,89 @@
 
 
 ## module load R/3.6.1
-.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-.libPaths()
+# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+# .libPaths()
+
+
+## install pacakges
+packages <- c("gplots", "ggplot2","reshape2","doParallel", "BiocManager")
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())))  
+}
+
 
 cat("\n
     *********************************\n
     *********  WGCNA part1  *********\n
     ******* Sample clustering *******\n
-    *********************************")
+    *********************************\n\n\n")
+
+
+############### take parameters from bash command #############
+directory = commandArgs(trailingOnly=TRUE)[1]
+fileExpr = commandArgs(trailingOnly=TRUE)[2]
+fileTraits = commandArgs(trailingOnly=TRUE)[3]
+log.base = commandArgs(trailingOnly=TRUE)[4]
+log.add = commandArgs(trailingOnly=TRUE)[5]
+###############################################################
+
 
 library(ggplot2)
 library(gplots)
 library(reshape2)
 library(doParallel)
 library(WGCNA)
-options(stringsAsFactors = FALSE)
+options(stringsAsFactors = FALSE)  
 
+# dir.create(file.path(directory), showWarnings = FALSE)
+# setwd(file.path(directory))
+# # getwd()
 
-cat("Enter working/output directory: ")
-directory <- readLines("stdin", 1)
-
-dir.create(file.path(directory), showWarnings = FALSE)
-setwd(file.path(directory))
-getwd()
 
 ################## load input files ##################################
 
-
-# cat("Enter path of the expression data : ")
-# fileExpr <- readLines("stdin", 1)
-
-fileExpr <- ""
-while (!file.exists(fileExpr)) {
-  cat("Enter path of the expression data : ")
-  fileExpr <<- readLines("stdin", 1)
-  if (!file.exists(fileExpr)) { cat("File doesn't exist. ")}
-}
-print(fileExpr)
-
+cat("\n **** Expression data :", fileExpr )
 cat("\n-------------Loading expression data -----------\n")
+
+while (!file.exists(fileExpr)) {
+  cat("File doesn't exist. Enter path of the expression data : ")
+  fileExpr <<- readLines("stdin", 1)
+  print(fileExpr)
+}
+
 datExpr <- read.delim(fileExpr,header=TRUE, row.names=1) 
 dim(datExpr)
 
-# cat("Enter path of the trait data ")
-# fileTraits <- readLines("stdin", 1)
 
-fileTraits <- ""
-while (!file.exists(fileTraits)) {
-  cat("Enter path of the trait data : ")
-  fileTraits <<- readLines("stdin", 1)
-  if (!file.exists(fileTraits)) { cat("File doesn't exist. ")}
-}
-print(fileTraits)
+cat("\n **** Trait data :", fileTraits)
 cat("\n-------------Loading trait data -----------------\n")
+
+while (!file.exists(fileTraits)) {
+  cat("File doesn't exist. Enter path of the trait data : ")
+  fileTraits <<- readLines("stdin", 1)
+  print(fileTraits)
+}
+
 datTraits <- read.delim(fileTraits, header = TRUE, row.names = 1)
 dim(datTraits)
 
-# ask if user want to log tranform expression data
-# WGCNA recommends a variance-stabilizing transformation with normalized counts (or RPKM/FPKM/TPM data) using log2(x+1). 
-# For highly expressed features, the differences between full variance stabilization and a simple log transformation are small.
-useLog = ""
-while (!(useLog %in% c("Y", "y", "N", "n"))) {
-  cat("Log tranform expression data [Y/N]: ")
-  useLog <- readLines("stdin", 1)
-  if (!(useLog %in% c("Y", "y", "N", "n"))) { cat("Log tranform expression data [Y/N]:")}
-}
 
-if (useLog == "Y"| useLog == "y"){
-  cat("logarithm base [2/10]: ")
-  log.base = as.numeric(readLines("stdin", 1))
-  cat("add constant: ")
-  log.add = as.numeric(readLines("stdin", 1))
+cat("\n **** Output directory :", directory, "\n" )
+dir.create(file.path(directory), showWarnings = FALSE)
+setwd(file.path(directory))
+# getwd()
+
+
+### Log transformation
+if (!is.na(log.base)){
+  cat("\n **** Log transformation: log", log.base, "(x+", log.add,")" )
+  log.base = as.numeric(log.base)
+  log.add = as.numeric(log.add)
   datExpr = log(datExpr+log.add, base=log.base)
 }
 
 datExpr1 <- t(datExpr)
+
 
 ################### data verification ################################
 cat("\n---------------------Remove no good genes --------------------\n")

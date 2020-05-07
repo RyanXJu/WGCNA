@@ -12,7 +12,7 @@
 # .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
 # .libPaths()
 
-directory <- "~/AML_WGCNA/test_pipeline"
+directory <- "~/AML_WGCNA/Leucegene/fltByExpr_lscFreqSamples_0505"
 
 library(ggplot2)
 library(gplots)
@@ -141,7 +141,7 @@ labeledHeatmap(Matrix = moduleTraitCor,
                colors = blueWhiteRed(50),
                textMatrix = textMatrix,
                setStdMargins = FALSE,
-               cex.text = 0.8,
+               cex.text = 0.5,
                zlim = c(-1,1),
                main = paste("Module-trait relationships"))
 
@@ -155,7 +155,7 @@ labeledHeatmap(Matrix = moduleTraitCor,
                colors = blueWhiteRed(50),
                textMatrix = textMatrix,
                setStdMargins = FALSE,
-               cex.text = 0.8,
+               cex.text = 0.5,
                zlim = c(-1,1),
                main = paste("Module-trait relationships"))
 dev.off()
@@ -170,7 +170,7 @@ labeledHeatmap(Matrix = moduleTraitCor,
                colors = blueWhiteRed(50),
                textMatrix = textMatrix,
                setStdMargins = FALSE,
-               cex.text = 0.8,
+               cex.text = 0.5,
                zlim = c(-1,1),
                main = paste("Module-trait relationships"))
 dev.off ()

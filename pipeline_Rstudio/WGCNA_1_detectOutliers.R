@@ -13,7 +13,7 @@
 # .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
 # .libPaths()
 
-directory <- "~/AML_WGCNA/test_pipeline"
+directory <- "~/AML_WGCNA/Leucegene/fltByExpr_lscFreqSamples_0505"
 
 library(ggplot2)
 library(gplots)
@@ -30,9 +30,9 @@ getwd()
 ################## load input files ##################################
 cat("\n---------------------Loading expression data and trait data--------------------\n ")
 
-datExpr <- read.delim("datExpr.tsv",header=TRUE, row.names=1) 
+datExpr <- read.delim("datExpr_fltByExpr_lscFreqSamples_0505.tsv",header=TRUE, row.names=1) 
 dim(datExpr)
-datTraits <- read.delim("datTraits.tsv", header = TRUE, row.names = 1)
+datTraits <- read.delim("datTraits_fltByExpr_lscFreqSamples_0505.tsv", header = TRUE, row.names = 1)
 dim(datTraits)
 
 # ask if user want to log tranform expression data

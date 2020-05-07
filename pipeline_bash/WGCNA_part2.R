@@ -8,8 +8,8 @@
 
 
 ## module load R/3.6.1
-.libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
-.libPaths()
+# .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
+# .libPaths()
 
 cat("\n
     *********************************\n
@@ -24,8 +24,10 @@ library(doParallel)
 library(WGCNA)
 options(stringsAsFactors = FALSE)
 
-cat("Enter working directory \nLocation of \"sampleTree.RData\": ")
-directory <- readLines("stdin", 1)
+directory = commandArgs(trailingOnly=TRUE)[1]
+cutHeight = as.numeric(commandArgs(trailingOnly=TRUE)[2])
+
+
 
 setwd(file.path(directory))
 getwd()
@@ -38,9 +40,12 @@ lnames = load("sampleTree.Rdata")
 
 # decide cut hight
 # ------------------------ choose cut hight of samples -------------------
-cat("\nEnter the hight to cut outliers 
-    \n(Please consult Part1_SampleClustering.pdf to decide cutting height ): ")
-cutHeight = as.numeric(readLines("stdin", 1))
+# cat("\nEnter the hight to cut outliers 
+#     \n(Please consult Part1_SampleClustering.pdf to decide cutting height ): ")
+# cutHeight = as.numeric(readLines("stdin", 1))
+
+cat("cut height: ", cutHeight)
+
 
 # Plot the sample tree
 pdf("Part2_SampleClustering_cut.pdf", width=12, height=8)
