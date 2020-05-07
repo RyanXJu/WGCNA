@@ -54,13 +54,13 @@ Please run the bash code by order, each part will launch the corresponding R cod
 
 * WGCNA_part1.sh:  
  remove low variance genes and genes with too much missing values, detect outlier samples  
- ***Usage***: ./WGCNA_part1.sh **-o** [Output Path] **-d** [Expression data] **-t** [Traits data] **-l** [log base] **-c** [add constant before log]
- ***Help***:  ./WGCNA_part1.sh **-h**
+ ***Usage***: ./WGCNA_part1.sh  **-o**  [Output Path]  **-d**  [Expression data]  **-t**  [Traits data]  **-l**  [log base] **-c**  [add constant before log]
+ ***Help***:  ./WGCNA_part1.sh  **-h**
  
 * WGCNA_part2.sh:  
   Gather topology information for soft-threshold selection  
-  ***Usage***: ./WGCNA_part2.sh **-o** [PATH of sampleTree.Rdata] **-c** [Height]  
-  ***Help***:  ./WGCNA_part2.sh **-h**
+  ***Usage***:   ./WGCNA_part2.sh  **-o**  [PATH of sampleTree.Rdata]  **-c**  [Height]  
+  ***Help***:    ./WGCNA_part2.sh  **-h**
 
 * WGCNA_part3.sh:  
   Detect gene expression modules, calculate correlation between modules and traits  
