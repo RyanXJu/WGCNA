@@ -28,8 +28,8 @@ Help(){
 	echo "-t|--trait       name of the selected trait"
 	echo "-i|--id          type of GeneID used in the expression data"
 	echo "$(tput bold)GeneID OPTIONS$(tput sgr0):"
-	echo "        [1]: ensembl_gene_id_version"
-	echo "        [2]: ensembl_gene_id"
+	echo "        [1]: ensembl_gene_id"
+	echo "        [2]: ensembl_gene_id_version"
 	echo "        [3]: hgnc_symbol"
 	
 	echo ""
