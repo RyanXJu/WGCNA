@@ -27,7 +27,7 @@ library(WGCNA)
 options(stringsAsFactors = FALSE)
 
 directory = commandArgs(trailingOnly=TRUE)[1]
-sft.power = commandArgs(trailingOnly=TRUE)[2]
+sft.power = as.numeric(commandArgs(trailingOnly=TRUE)[2])
 
 setwd(file.path(directory))
 getwd()
