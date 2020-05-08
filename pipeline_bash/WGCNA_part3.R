@@ -26,10 +26,6 @@ library(doParallel)
 library(WGCNA)
 options(stringsAsFactors = FALSE)
 
-
-# cat("Enter working directory \nLocation of \"topology.RData\": ")
-# directory <- readLines("stdin", 1)
-
 directory = commandArgs(trailingOnly=TRUE)[1]
 sft.power = commandArgs(trailingOnly=TRUE)[2]
 
@@ -41,16 +37,14 @@ getwd()
 lnames = load("topology.Rdata")
 # lnames
 
-
-# decide soft threshold power
-while (!(sft.power %in% c(1:20))) {
-  sft.power = as.numeric(readLines("stdin", 1))
-  if (!(sft.power %in% c(1:20))) { 
-    cat("Chosen power is out of range\n(Please consult ScaleFree_topology.pdf/png to decide ):")}
-}
+# while (!(sft.power %in% c(1:20))) {
+#   sft.power = as.numeric(readLines("stdin", 1))
+#   if (!(sft.power %in% c(1:20))) { 
+#     cat("Chosen power is out of range\n(Please consult ScaleFree_topology.pdf/png to decide ):")}
+# }
 
 
-# replot the topology results:
+## 
 pdf("Part3_ScaleFreeTopology_sft.pdf", width=12, height=8)
 par(mfrow = c(1,2))
 cex1 = 0.9
@@ -71,7 +65,6 @@ abline(h=sft$fitIndices[sft.power,5],col="red")
 invisible(dev.off())
 
 
-# use WGCNA's cor() function
 cat("\n---------------------module detection--------------------\n")
 cat("\n**This may take hours with large numbers of genes and samples**\n")
 
@@ -90,7 +83,7 @@ cat("\n---------------finish detecting modules--------------------\n")
 
 mergedColors = labels2colors(net$colors)
 
-# Plot the dendrogram and the module colors underneath
+# Plot the gene dendrogram with the module colors underneath
 pdf("Part3_GeneClusterDendrogram.pdf", width=12, height=8)
 plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
                     "Module colors",
@@ -99,7 +92,6 @@ plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
 invisible(dev.off())
 
 
-## save result
 moduleLabels = net$colors
 moduleColors = labels2colors(net$colors)
 # table(moduleColors)
@@ -113,11 +105,10 @@ geneTree = net$dendrograms[[1]]
 cat("\nNumber of genes in each module: \n")
 print(as.data.frame(table(moduleColors)))
 
-# find the top hub gene in each module
+## top hub gene in each module
 cat("\nTOP hub gene in each module: \n")
 topHubs <- chooseTopHubInEachModule(datExpr=datExpr2, colorh = moduleColors, power = 2)
 print(topHubs)
-
 
 
 #################### test module - traits correlation #################

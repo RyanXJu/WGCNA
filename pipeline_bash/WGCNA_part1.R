@@ -6,19 +6,12 @@
 # ###### input: ###########################################################
 # datExpr: normalized gene expression data (rownames--genes, colnames--samples)
 # datTrait: trait data of all the samples (rownames--samples, colnames--trait)
-#################################################################################
+###########################################################################
 
 
 ## module load R/3.6.1
 # .libPaths("/u/juxiao/R/x86_64-pc-linux-gnu-library/3.6" )
 # .libPaths()
-
-
-## install pacakges
-packages <- c("gplots", "ggplot2","reshape2","doParallel", "BiocManager")
-if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())))  
-}
 
 
 cat("\n
@@ -34,7 +27,7 @@ fileExpr = commandArgs(trailingOnly=TRUE)[2]
 fileTraits = commandArgs(trailingOnly=TRUE)[3]
 log.base = commandArgs(trailingOnly=TRUE)[4]
 log.add = commandArgs(trailingOnly=TRUE)[5]
-###############################################################
+
 
 
 library(ggplot2)
@@ -44,12 +37,8 @@ library(doParallel)
 library(WGCNA)
 options(stringsAsFactors = FALSE)  
 
-# dir.create(file.path(directory), showWarnings = FALSE)
-# setwd(file.path(directory))
-# # getwd()
 
-
-################## load input files ##################################
+################## load input files ###########################
 
 cat("\n **** Expression data :", fileExpr )
 cat("\n-------------Loading expression data -----------\n")
@@ -77,13 +66,14 @@ datTraits <- read.delim(fileTraits, header = TRUE, row.names = 1)
 dim(datTraits)
 
 
+## set output directory
 cat("\n **** Output directory :", directory, "\n" )
 dir.create(file.path(directory), showWarnings = FALSE)
 setwd(file.path(directory))
 # getwd()
 
 
-### Log transformation
+## Log transformation
 if (!is.na(log.base)){
   cat("\n **** Log transformation: log", log.base, "(x+", log.add,")" )
   log.base = as.numeric(log.base)
@@ -99,11 +89,6 @@ cat("\n---------------------Remove no good genes --------------------\n")
 
 # verify expression data
 gsg = goodSamplesGenes(datExpr1, verbose = 3)
-# goodSamplesGenes() default parameters
-# minFraction = 1/2 :minimum fraction of non-missing samples for a gene
-# minNSamples =4 minimum number of non-missing samples for a gene
-# remove genes with zero variance
-
 gsg$allOK
 
 ## remove no good genes
@@ -117,7 +102,7 @@ if (!gsg$allOK)
   datExpr1 = datExpr1[gsg$goodSamples, gsg$goodGenes]
 }
 
-####################### remove outlier samples ######################
+
 cat("\n----------------- Build sample tree --------------------------\n")
 
 sampleTree = hclust(dist(datExpr1, method = "euclidean"), method = "average")

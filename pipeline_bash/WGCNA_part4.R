@@ -27,23 +27,14 @@ library(topGO)
 library(KEGGREST)
 options(stringsAsFactors = FALSE)
 
-
-# cat("Enter working directory \nLocation of \"network.RData\": ")
-# directory <- readLines("stdin", 1)
-
 directory  = commandArgs(trailingOnly=TRUE)[1]
 geneID.sel = as.numeric(commandArgs(trailingOnly=TRUE)[2])
 module.sel = commandArgs(trailingOnly=TRUE)[3]
 trait.sel  = commandArgs(trailingOnly=TRUE)[4]
 
-
 setwd(file.path(directory))
 # getwd()
 
-
-# geneID.sel <- ""  
-# module.sel <- ""
-# trait.sel <- ""
 
 ############### load data ###########################################################
 netInfo <- load("network.RData")
@@ -51,10 +42,8 @@ netInfo <- load("network.RData")
 
 geneID.type.list = c("ensembl_gene_id", "ensembl_gene_id_version", "hgnc_symbol")
 geneID.type <- geneID.type.list[as.integer(geneID.sel)]
-# print(geneID.type)
 
-
-## user enter : color of module of intrest
+## check selected module (color)
 cat("\n---------------Number of genes in each module: ---------------- \n")
 print(as.data.frame(table(moduleColors)))
 
@@ -64,7 +53,7 @@ while (!(module.sel %in% unique(moduleColors))) {
 }
 
 
-## user enter : trait of intrest
+## check selected trait (name)
 cat("\n---------------Traits : ---------------- \n")
 print(colnames(datTraits))
 
@@ -78,7 +67,7 @@ trait <- as.data.frame(datTraits[,trait.sel])
 names(trait) <- trait.sel
 
 
-############### Eigengene + trait dendrogram
+############### plot dendrogram of Eigengene + trait ###############################
 MET = orderMEs(cbind(MEs, trait))
 
 pdf("Part4_eigengeneTraitDendrogram.pdf", width=12, height=8)
@@ -130,12 +119,12 @@ invisible(dev.off())
 
 
 # genes in the selected module
-geneInModule <- colnames(datExpr2)[moduleColors == module.sel]
+geneInModule = colnames(datExpr2)[moduleColors == module.sel]
 # geneInModule
 
 
 # verify geneID type, build annotation dataframe
-geneAnn<- getBM(attributes=c('ensembl_gene_id_version', 
+geneAnn <- getBM(attributes=c('ensembl_gene_id_version', 
                              'ensembl_gene_id', 
                              'hgnc_symbol',
                              'entrezgene_id'), 
@@ -149,7 +138,7 @@ geneAnn<- getBM(attributes=c('ensembl_gene_id_version',
 
 # 
 geneInModule.Ann = geneAnn[match(geneInModule,geneAnn[[geneID.type]]),]
-geneInModule.df = merge(geneInModule.Ann, geneInModule.mm, by.x ="ensembl_gene_id_version" ,  by.y = "row.names" )
+geneInModule.df = merge(geneInModule.Ann, geneInModule.mm, by.x ="ensembl_gene_id_version", by.y = "row.names" )
 
 write.table(geneInModule.df, file = paste0(paste("geneInModule",module.sel,trait.sel,sep="_"), ".tsv"), 
             quote = FALSE, col.names=NA, sep="\t" )
@@ -159,11 +148,11 @@ write.table(geneInModule.df, file = paste0(paste("geneInModule",module.sel,trait
 ######################### GO term enrichment analysis ########################
 cat("\n ---------------GO enrichment analysis of module : ---------------- \n")
 
-all_genes <- geneAnn$ensembl_gene_id
+all_genes = geneAnn$ensembl_gene_id
 
-geneList <- factor(as.integer (geneAnn[[geneID.type]] %in% geneInModule))
+geneList = factor(as.integer (geneAnn[[geneID.type]] %in% geneInModule))
 # geneList
-names (geneList) <- all_genes
+names (geneList) = all_genes
 
 geneSelFunc <- function (x) {
   return(x == 1 )
@@ -193,19 +182,19 @@ print(head(tab, 10))
 ######################### KEGG  #################################################
 cat("\n ---------------KEGG analysis of module : ---------------- \n")
 
-# all databases
+# # check all available databases
 # listDatabases()
 # keggList("organism")
 # keggList("hsa")
 
 # Pull all pathways for AT
-pathways.list <- keggList("pathway", "hsa")
-# pathways.list <- keggList("pathway", "mmu") # for mouse
+pathways.list = keggList("pathway", "hsa")
+# pathways.list = keggList("pathway", "mmu") # for mouse
 # head(pathways.list)
 
 # Pull all genes for each pathway
-pathway.codes <- sub("path:", "", names(pathways.list))
-names(pathways.list) <- pathway.codes
+pathway.codes = sub("path:", "", names(pathways.list))
+names(pathways.list) = pathway.codes
 genes.by.pathway <- sapply(pathway.codes,
                            function(pwid){
                              pw <- keggGet(pwid)
@@ -217,8 +206,8 @@ genes.by.pathway <- sapply(pathway.codes,
 )
 # head(genes.by.pathway)
 
-geneList_KEGG <- geneModuleMembership[geneInModule, paste0("MM", module.sel, sep="")]
-names(geneList_KEGG) <- geneAnn$hgnc_symbol[match(geneInModule, geneAnn[[geneID.type]] )]
+geneList_KEGG = geneModuleMembership[geneInModule, paste0("MM", module.sel, sep="")]
+names(geneList_KEGG) = geneAnn$hgnc_symbol[match(geneInModule, geneAnn[[geneID.type]] )]
 # head(geneList_KEGG)
 
 # Wilcoxon test for each pathway
@@ -251,11 +240,11 @@ pVals.by.pathway <- t(sapply(names(genes.by.pathway),
 ))
 
 # Assemble output table
-outdat <- data.frame(pathway.code = rownames(pVals.by.pathway))
-outdat$pathway.name <- pathways.list[outdat$pathway.code]
-outdat$p.value <- pVals.by.pathway[,"p.value"]
-outdat$Annotated <- pVals.by.pathway[,"Annotated"]
-outdat <- outdat[order(outdat$p.value),]
+outdat = data.frame(pathway.code = rownames(pVals.by.pathway))
+outdat$pathway.name = pathways.list[outdat$pathway.code]
+outdat$p.value = pVals.by.pathway[,"p.value"]
+outdat$Annotated = pVals.by.pathway[,"Annotated"]
+outdat = outdat[order(outdat$p.value),]
 print(head(outdat,10))
 
 cat("\n--------------------- Part4 Done -----------------------------\n")
