@@ -4,13 +4,14 @@
 R: 3.6.1
 
 # Packages:
-ggplot2
-reshape2
+gplots_3.0.3     
+ggplot2_3.3.0 
+reshape2_1.4.4  
 doParallel
-WGCNA
-biomaRt
-topGO
-KEGGREST
+WGCNA_1.69 
+biomaRt_2.42.1
+topGO_2.38.1  
+KEGGREST_1.26.1 
 
 
 ## Install packages
