@@ -28,6 +28,9 @@ options(stringsAsFactors = FALSE)
 
 directory = commandArgs(trailingOnly=TRUE)[1]
 sft.power = as.numeric(commandArgs(trailingOnly=TRUE)[2])
+network = commandArgs(trailingOnly=TRUE)[3]
+
+print(paste("network type:", network))
 
 setwd(file.path(directory))
 getwd()
@@ -54,7 +57,7 @@ plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
      main = paste("Scale independence"));
 text(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
      labels=powers,cex=cex1,col="red")
-abline(h=-sign(sft$fitIndices[sft.power,3])*sft$fitIndices[sft.power,2],col="red")
+abline(h=sft$fitIndices[sft$fitIndices$Power == sft.power,2],col="red")
 
 # Mean connectivity as a function of the soft-thresholding power
 plot(sft$fitIndices[,1], sft$fitIndices[,5],
@@ -69,10 +72,15 @@ cat("\n---------------------module detection--------------------\n")
 cat("\n**This may take hours with large numbers of genes and samples**\n")
 
 cor <- WGCNA::cor
-net = blockwiseModules(datExpr2, power = sft.power,
-                       TOMType = "unsigned", minModuleSize = 30,
-                       reassignThreshold = 0, mergeCutHeight = 0.25,
-                       numericLabels = TRUE, pamRespectsDendro = FALSE,
+net = blockwiseModules(datExpr2, 
+                       power = sft.power,
+                       networkType = network, # OPTION:"signed"/"unsigned"
+                       TOMType = network, # OPTION:"signed"/"unsigned"
+                       minModuleSize = 30,
+                       reassignThreshold = 0,
+                       mergeCutHeight = 0.25,
+                       numericLabels = TRUE, 
+                       pamRespectsDendro = FALSE,
                        saveTOMs = TRUE,
                        saveTOMFileBase = "moduleDetection", 
                        verbose = 3)

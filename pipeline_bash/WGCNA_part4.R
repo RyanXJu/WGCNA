@@ -70,7 +70,8 @@ names(trait) <- trait.sel
 ############### plot dendrogram of Eigengene + trait ###############################
 MET = orderMEs(cbind(MEs, trait))
 
-pdf("Part4_eigengeneTraitDendrogram.pdf", width=12, height=8)
+pdfname = paste("Part4_eigengene_", trait.sel,"_Dendrogram.pdf")
+pdf(pdfname, width=12, height=8)
 par(mar = c(6, 6, 3, 3))
 plotEigengeneNetworks(MET, "", marDendro = c(0,4,1,2),
                       marHeatmap = c(5,4,1,2), cex.lab = 0.8,
@@ -106,7 +107,7 @@ geneInModule.mm = data.frame( "MM" = geneModuleMembership[ moduleColors==module.
 rownames(geneInModule.mm) <- rownames(geneModuleMembership)[ moduleColors==module.sel]
 
 
-plotname = paste("Part4_geneInModule_",module.sel,".pdf", sep="")
+plotname = paste("Part4_geneInModule_",module.sel,"_", trait.sel,".pdf", sep="")
 pdf(plotname, width=12, height=8)
 par(mar = c(6, 6, 3, 3))
 verboseScatterplot(abs(geneModuleMembership[ moduleColors==module.sel , paste0("MM", module.sel, sep="")]),
@@ -138,7 +139,12 @@ geneAnn <- getBM(attributes=c('ensembl_gene_id_version',
 
 # 
 geneInModule.Ann = geneAnn[match(geneInModule,geneAnn[[geneID.type]]),]
-geneInModule.df = merge(geneInModule.Ann, geneInModule.mm, by.x ="ensembl_gene_id_version", by.y = "row.names" )
+
+library(dplyr)
+geneInModule.mm$geneID = rownames(geneInModule.mm)
+geneInModule.df = left_join(x = geneInModule.mm, y = geneInModule.Ann, by = c("geneID" = "ensembl_gene_id_version"))
+rownames(geneInModule.df) = geneInModule.df$geneID
+# geneInModule.Ann will be NA if not found by getBM
 
 write.table(geneInModule.df, file = paste0(paste("geneInModule",module.sel,trait.sel,sep="_"), ".tsv"), 
             quote = FALSE, col.names=NA, sep="\t" )
@@ -177,6 +183,7 @@ resultKS <- runTest(GOdata, algorithm = "classic", statistic = "fisher")
 
 tab <- GenTable(GOdata, raw.p.value = resultKS, topNodes = length(resultKS@score), numChar = 120)
 print(head(tab, 10))
+write.table(head(tab,10), file = paste("GO_",module.sel,".tsv"), quote =F, sep="\t")
 
 
 ######################### KEGG  #################################################
@@ -246,5 +253,6 @@ outdat$p.value = pVals.by.pathway[,"p.value"]
 outdat$Annotated = pVals.by.pathway[,"Annotated"]
 outdat = outdat[order(outdat$p.value),]
 print(head(outdat,10))
+write.table(head(outdat,10), file = paste("KEGG_",module.sel,".tsv"), quote =F, sep="\t")
 
 cat("\n--------------------- Part4 Done -----------------------------\n")

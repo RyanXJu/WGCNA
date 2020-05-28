@@ -4,7 +4,7 @@ module load R/3.6.1
 
 Help(){
   echo ""
-  echo "Usage: ./WGCNA_part3.sh -o [PATH of topology.Rdata] -s [Soft-threshold]"
+  echo "Usage: ./WGCNA_part3.sh -o [PATH of topology.Rdata] -s [Soft-threshold] -n [Network type]"
   echo ""
 	echo "--------------------- $(tput bold)WGCNA_part3$(tput sgr0) -------------------------------"
 	echo "This part will: "
@@ -29,6 +29,7 @@ Help(){
 	echo "--------------------- $(tput bold)Parameters$(tput sgr0) --------------------------------" 
 	echo "-o|--output      directory of output (folder of topology.Rdata)"
 	echo "-s|--sft         soft-threshold to build scale-free network "
+	echo "-n|--network     OPTION: signed/unsigned "
   echo ""
 }
 
@@ -44,6 +45,11 @@ do
 	;;
     -s|--sft)
         SFT="${2}"
+        shift # past argument
+        shift # past value
+        ;;
+    -n|--network)
+        NET="${2}"
         shift # past argument
         shift # past value
         ;;
@@ -73,8 +79,12 @@ if [ "$SFT" -gt 20 ] || [ "$SFT" -lt 1 ]; then
 	exit 1
 fi
 
+if [ "$NET" != "signed" ] && [ "$NET" != "unsigned" ] ; then
+    $NET = "unsigned"
+    echo "Network type is not supported by WGCNA, build unsigned network by default!"
+fi
 
 # run R
-Rscript WGCNA_part3.R $OUTPUT $SFT
+Rscript WGCNA_part3.R $OUTPUT $SFT $NET
 
 
