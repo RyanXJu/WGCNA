@@ -1,6 +1,8 @@
 #!/bin/bash
 
-module load R/3.6.1
+# module load R/3.6.1
+
+DIR=$(dirname "$0")
 
 Help(){
   echo ""
@@ -85,6 +87,6 @@ if [ "$NET" != "signed" ] && [ "$NET" != "unsigned" ] ; then
 fi
 
 # run R
-Rscript WGCNA_part3.R $OUTPUT $SFT $NET
+Rscript "${DIR}/WGCNA_part3.R" $OUTPUT $SFT $NET
 
 

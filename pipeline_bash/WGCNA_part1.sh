@@ -1,6 +1,8 @@
 #!/bin/bash
 
-module load R/3.6.1
+# module load R/3.6.1
+
+DIR=$(dirname "$0")
 
 # help info
 Help(){
@@ -92,4 +94,4 @@ if [ -z "$OUTPUT" ] ; then
 fi
 
 # run R
-Rscript WGCNA_part1.R $OUTPUT $DATA $TRAIT $LOG $CONSTANT
+Rscript "${DIR}/WGCNA_part1.R" $OUTPUT $DATA $TRAIT $LOG $CONSTANT

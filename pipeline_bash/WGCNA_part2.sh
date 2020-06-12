@@ -1,6 +1,8 @@
 #!/bin/bash
 
-module load R/3.6.1
+# module load R/3.6.1
+
+DIR=$(dirname "$0")
 
 Help(){
   echo ""
@@ -64,4 +66,4 @@ if [ ! -z "$CUTHEIGHT" ] && [[ ! "$CUTHEIGHT" =~ ^[0-9]+$ ]]  ; then  # CUTHEIGH
 fi
 
 
-Rscript WGCNA_part2.R $OUTPUT $CUTHEIGHT
+Rscript "${DIR}/WGCNA_part2.R" $OUTPUT $CUTHEIGHT

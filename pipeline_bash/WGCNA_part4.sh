@@ -1,6 +1,8 @@
 #!/bin/bash
 
-module load R/3.6.1
+# module load R/3.6.1
+
+DIR=$(dirname "$0")
 
 Help(){
   echo ""
@@ -97,4 +99,4 @@ fi
 
 
 # run R
-Rscript WGCNA_part4.R $OUTPUT $GENEID $MODULE $TRAIT 
+Rscript "${DIR}/WGCNA_part4.R" $OUTPUT $GENEID $MODULE $TRAIT 
